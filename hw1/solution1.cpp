@@ -112,6 +112,6 @@ List compute(int total, int keyNumber) {
 int main() {
     int total, keyNumber;
     cin >> total >> keyNumber;
-    Circle *circle = compute(total, keyNumber);
+    List *circle = compute(total, keyNumber);
     cout << (*(*circle).getFirst()).getId() << "\n";
 }
