@@ -1,0 +1,407 @@
+\documentclass[10.5pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage[shortlabels]{enumitem}
+\usepackage{tikz}
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{epsfig} %% for loading postscript figures
+\usepackage{amsmath}
+\usepackage{float}
+\usepackage{amssymb}
+\usepackage{caption}
+\usepackage{subfigure}
+\usepackage{graphics}
+\usepackage{titlesec}
+\usepackage{mathrsfs}
+\usepackage{amsfonts}
+\usepackage{indentfirst}
+
+\renewcommand{\baselinestretch}{1.2}%Adjust Line Spacing
+%\geometry{left=2.0cm,right=2.0cm,top=2.0cm,bottom=2.0cm}% Adjust Margins of the File
+\usepackage{tikz-qtree}
+\usetikzlibrary{graphs}
+\tikzset{every tree node/.style={minimum width=2em,draw,circle},
+	blank/.style={draw=none},
+	edge from parent/.style=
+	{draw,edge from parent path={(\tikzparentnode) -- (\tikzchildnode)}},
+	level distance=1.2cm}
+\setlength{\parindent}{0pt}
+%\setlength{\parskip}{5pt plus 1pt}
+\setlength{\headheight}{13.6pt}
+\newcommand\question[2]{\vspace{.25in}\hrule\textbf{#1: #2}\vspace{.5em}\hrule\vspace{.10in}}
+\renewcommand\part[1]{\vspace{.10in}\textbf{(#1)}}
+\newcommand\algorithm{\vspace{.10in}\textbf{Algorithm: }}
+\newcommand\correctness{\vspace{.10in}\textbf{Correctness: }}
+\newcommand\runtime{\vspace{.10in}\textbf{Running time: }}
+\pagestyle{fancyplain}
+% Create horizontal rule command with an argument of height
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}}
+% Set the title here
+\title{
+    \normalfont \normalsize
+    \textsc{ShanghaiTech University} \\ [25pt]
+    \horrule{0.5pt} \\[0.4cm] % Thin top horizontal rule
+    \huge CS101 Algorithms and Data Structures\\ % The assignment title
+    \LARGE Fall 2019\\
+    \LARGE Homework 1\\
+    \horrule{2pt} \\[0.5cm] % Thick bottom horizontal rule
+}
+% wrong usage of \author, never mind
+\author{}
+\date{Due date: 23:59, September 22, 2019}
+
+% set the header and footer
+\pagestyle{fancy}
+\lhead{CS101 Algorithms and Data Structures}
+\chead{Homework 1}
+\rhead{Due date: 23:59, September 22, 2019}
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% special settings for the first page
+\fancypagestyle{firstpage}
+{
+	\renewcommand{\headrulewidth}{0pt}
+	\fancyhf{}
+	\fancyfoot[C]{\thepage}
+}
+
+% Add the support for auto numbering
+% use \problem{title} or \problem[number]{title} to add a new problem
+% also \subproblem is supported, just use it like \subsection
+\newcounter{ProblemCounter}
+\newcounter{oldvalue}
+\newcommand{\problem}[2][-1]{
+	\setcounter{oldvalue}{\value{secnumdepth}}
+	\setcounter{secnumdepth}{0}
+	\ifnum#1>-1
+		\setcounter{ProblemCounter}{0}
+	\else
+		\stepcounter{ProblemCounter}
+	\fi
+	\section{Problem \arabic{ProblemCounter}: #2}
+	\setcounter{secnumdepth}{\value{oldvalue}}
+}
+\newcommand{\subproblem}[1]{
+	\setcounter{oldvalue}{\value{section}}
+	\setcounter{section}{\value{ProblemCounter}}
+	\subsection{#1}
+	\setcounter{section}{\value{oldvalue}}
+}
+
+\begin{document}
+\maketitle
+\thispagestyle{firstpage}
+%\newpage
+\vspace{3ex}
+
+\begin{enumerate}
+\item Please write your solutions in English. 
+
+\item Submit your solutions to gradescope.com.  
+
+\item Set your FULL Name to your Chinese name and your STUDENT ID correctly in Account Settings. 
+
+\item If you want to submit a handwritten version, scan it clearly. Camscanner is recommended. 
+
+\item When submitting, match your solutions to the according problem numbers correctly. 
+
+\item No late submission will be accepted.
+
+\item Violations to any of the above may result in zero grade. 
+\end{enumerate}
+\newpage
+
+%---------------------------------------------------------
+\question{0}{Brief review}
+In the lectures in Week 1, we introduced two basic data structures: \textbf{array} and \textbf{linked list}. They are both widely used in storing and accessing data. Though their operations look quite similar, the efficiency may vary significantly depending on specific application scenarios.\\
+
+\begin{enumerate}
+	\item[$\bullet$] \textbf{Array}\\
+	When we initialize an array, the compiler will ask for a \textbf{continuous} space from the memory. The continuity in memory determines the efficiency of array's operation. Compared to linked list, array outperforms in \textbf{accessing} data once the index is given. For example, \texttt{A[k] (k is a valid index)} is always in $O(1)$ time complexity. From the view of computer, accessing \texttt{A[k]} is encoded as accessing \texttt{MEM[addr of A + k * sizeof(element)]}. The access of memory is considered as $O(1)$. Pushing element to the end and replacing current element are also $O(1)$, since they are still implemented based on index access. However, \textbf{insertion} and \textbf{deletion} of original array are very inefficient $O(n)$. Since we always need to maintain the memory continuity for the array, the extra element memory needed by insertion and the rubbish element memory caused by deletion will call for the replacement of all the elements to the right of the target element. As the array grows in size, it could be the case that the continuous memory occupied by current array runs out. Then the compiler will ask for a larger continuous memory space from the system, and copy all the elements to new array (in $O(n)$), and free the previous memory space.\\
+	
+	According to the properties of array, we should try not to perform insertion, deletion or resize, which means the best application scenario for array is when there is no modifications in array, for example, read data from a \textbf{const src} array, compute and write to a \textbf {dst} file. The memory continuity is sometimes crucial in optimizing performance. It is friendly for \textbf{cache} (cache is about 10x faster than memory). The parallelism in register scale (register is at least 100x faster than memory), for example, \texttt{Intel SSE SIMD intrinsics}, also requires the memory continuity of data.\\
+	
+	\item[$\bullet$] \textbf{Linked List}\\
+	Normally, we use pointer to implement a linked list. In this case, the memory usage of linked list can be incontinuous. It's very interesting that you can tell that the memory \textbf{incontinuity} brings the efficiency of \textbf{insertion, deletion and resize} for linked list. The detailed implementation for these operations have been demonstrated in lectures and discussions.\\
+	
+	 Apparently, linked list is very unfriendly for cache, and \texttt{SIMD intrinsics} is also not compatible. In this homework, we want you to practice the operations of linked list and the usage of pointer based on some newly defined operations. 
+
+	
+\end{enumerate}
+\pagebreak
+
+%---------------------------------------------------------------
+\question{0}{Linked list data structure}
+You should use the defined linked list to implement all the newly defined operations. Please pay attention to the following rules:
+\begin{enumerate}
+	\item There is no dummy node as the entry node, i.e. if the linked list is not empty, \texttt{head} points to the first node.
+	\item Use \texttt{new} and \texttt{delete} to deal with memory issues.
+	\item Remember to maintain \texttt{head} and \texttt{tail}.
+	\item You may not use all of the blank lines. There is at most one statement (ended with \texttt{;}) in each blank line.
+	\item For simplicity, the retrieve function is not given and you can directly use the private attributes like \texttt{node->data}, \texttt{list->head} etc. (Invalid for programming but OK for this homework)
+	\item If there is any syntax error, this line will be counted as wrong.
+\end{enumerate}
+
+\hrulefill
+\begin{lstlisting}[language=C++]
+class Node {
+private:
+    int data;
+    Node *next;
+    
+public:
+    Node(int val, Node *nextNode):data(val), next(nextNode)
+    {
+    }
+... ...
+};
+
+
+
+class List {
+private:
+	// List: empty
+	//       head = tail = NULL;
+	// List: Node(1) -> NULL
+	//       head = Node(1);
+	//       tail = Node(1);
+	// List: Node(1) -> Node(2) -> NULL
+	//       head = Node(1);
+	//       tail = Node(2); 
+	Node *head;
+	Node *tail;
+... ...
+};
+\end{lstlisting}
+\pagebreak
+
+%------------------------------------------------------------------
+\question{1}{Insert Before}
+This operation has been discussed in detail. Given a new data and the target node, create a new node using the new data and insert the new node before the target node. You should implement this function with $O(1)$ time complexity.
+\begin{enumerate}
+	\item[$\bullet$] Assume the target node is neither \texttt{head} nor \texttt{tail}.
+\end{enumerate}
+
+\hrulefill
+\begin{lstlisting}[language=C++]
+
+void InsertBefore (Node *curr, int data)
+{
+    Node *newNode = new Node(____________________________);
+    
+    ______________________________________________________;
+    
+    ______________________________________________________;
+}
+
+\end{lstlisting}
+
+\pagebreak
+
+%--------------------------------------------------------------
+\question{2}{Remove Duplication}
+Given a linked list in ascending order, you should remove all the nodes with duplicate data. Traverse the list for at most once. For example: \\
+
+\texttt{Before:}\\
+\texttt{list: 1 -> 2 -> 2 -> 3 -> 3 -> NULL}\\
+\\
+\texttt{After:}\\
+\texttt{list: 1 -> 2 -> 3 -> NULL}\\
+
+
+\hrulefill
+\begin{lstlisting}[language=C++]
+
+void RemoveDuplication (List *list)
+{
+    Node *curr = list->head;
+    if (curr == NULL) 
+    {
+        return;
+    }
+	
+    while (curr->next != NULL)
+    {
+        if (curr->data == curr->next->data)
+        {
+            ______________________________________________________;
+                        
+            if (_____________________________________)
+            {
+                __________________________________________________;
+            }
+            
+            ______________________________________________________;
+            
+            __________________________=___________________________;
+
+        }
+        else
+        {
+            ______________________________________________________;
+        }
+    }
+}
+\end{lstlisting}
+\pagebreak
+
+
+%--------------------------------------------------------------
+\question{3}{Move Head}
+Given a non-empty linked list \texttt{src} and a linked list \texttt{dst}. Move the head node of \texttt{src} to the tail of \texttt{dst}. For example: \\
+
+\texttt{Before:}\\
+\texttt{src: 1 -> 2 -> 3 -> NULL}\\
+\texttt{dst: 4 -> 5 -> 6 -> NULL}\\
+\\
+\texttt{After:}\\
+\texttt{src: 2 -> 3 -> NULL}\\
+\texttt{dst: 4 -> 5 -> 6 -> 1 -> NULL}\\
+
+
+\hrulefill
+\begin{lstlisting}[language=C++]
+
+void MoveHead (List *src, List *dst)
+{
+    Node *headNode = src->head;
+    assert(headNode);
+    
+    __________________________________________________________;
+    
+        
+    if (____________________________________)
+    {
+        src->tail = NULL;
+    }
+    
+    __________________________________________________________;
+    
+    if (dst->head == NULL)
+    {
+        ______________________________________________________;
+    }
+    else
+    {
+        ______________________________________________________;
+    }
+    
+    __________________________________________________________;
+    
+}
+
+\end{lstlisting}
+\pagebreak
+
+%--------------------------------------------------------------
+\question{4}{Alternate Split}
+Given a linked list \texttt{src}, split it to two linked list  \texttt{a} and \texttt{b} in alternating order. For example:\\
+
+\texttt{Before:}\\
+\texttt{src: 1 -> 2 -> 3 -> 4 -> 5 -> NULL}\\
+\texttt{a: NULL}\\
+\texttt{b: NULL}\\
+\\
+\texttt{After:}\\
+\texttt{src: NULL}\\
+\texttt{a: 1 -> 3 -> 5 -> NULL}\\
+\texttt{b: 2 -> 4 -> NULL}\\
+
+\begin{enumerate}
+	\item[$\bullet$] You may assume \texttt{src} has more than 4 elements, i.e. after this function, \texttt{head} and \texttt{tail} of \texttt{a} and\texttt{b} point to different nodes.
+	\item[$\bullet$] \texttt{a} and \texttt{b} are initially empty.
+	\item[$\bullet$] Use \texttt{MoveHead} to implement this function.
+\end{enumerate}
+
+
+\hrulefill
+\begin{lstlisting}[language=C++]
+
+void AlternateSplit (List *src, List *a, List *b)
+{
+    assert (a->head == NULL && b->head == NULL);
+    
+    while (______________________________________)
+    {
+        __________________________________________________________;
+
+     	if (_____________________________________)
+     	{
+     	    ______________________________________________________;
+     	}
+    }
+}
+
+\end{lstlisting}
+\pagebreak
+
+
+%--------------------------------------------------------------
+\question{5}{Sorted Merge}
+Given two non-empty sorted (in ascending order) linked list \texttt{a} and \texttt{b}. Merge them to a single empty sorted (in ascending order) linked list \texttt{dst}.
+
+\texttt{Before:}\\
+\texttt{a: 1 -> 4 -> 6 -> 7 -> NULL}\\
+\texttt{b: 2 -> 3 -> 5 -> NULL}\\
+\texttt{dst: NULL}\\
+\\
+\texttt{After:}\\
+\texttt{a: NULL}\\
+\texttt{b: NULL}\\
+\texttt{dst: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> NULL}\\
+
+\begin{enumerate}
+	\item[$\bullet$] You may assume all the elements' data are unique.
+	\item[$\bullet$] Use \texttt{MoveHead} to implement this function.
+\end{enumerate}
+\newpage
+
+\hrulefill
+\begin{lstlisting}[language=C++]
+
+void SortedMerge (List *a, List *b, List *dst)
+{
+    assert(dst->head == NULL);
+    assert(a->head != NULL && b->head != NULL);
+        
+    while (true)
+    {      
+        if (a->head == NULL)
+        {
+            if (______________________________)
+            {
+                 _____________________________________________________;
+                 
+                 _____________________________________________________;
+                 
+                 b->head = b->tail = NULL;
+            }
+            
+            __________________________________________________________;
+        }
+        
+        if (b->head == NULL)
+        {
+            // similar to above, ignore it
+            ... ...
+        }
+     
+        if (a->head->data < b->head->data)
+        {
+            __________________________________________________________;
+        }   
+        else
+        {
+            __________________________________________________________;
+        }
+    }
+}
+
+\end{lstlisting}
+\pagebreak
+
+
+\end{document}
