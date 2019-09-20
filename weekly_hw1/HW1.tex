@@ -190,11 +190,11 @@ This operation has been discussed in detail. Given a new data and the target nod
 
 void InsertBefore (Node *curr, int data)
 {
-    Node *newNode = new Node(data);
+    Node *newNode = new Node(curr->data,curr->next);
     
-    newNode.next->curr;
+    curl->next=newNode;
     
-    curr->newNode;
+    curr->data=data;
 }
 
 \end{lstlisting}
@@ -330,7 +330,7 @@ void AlternateSplit (List *src, List *a, List *b)
 
      	if (src->head != NULL)
      	{
-     	MoveHead(a,b);
+     	MoveHead(src,b);
      	}
     }
 }
