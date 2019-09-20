@@ -190,11 +190,11 @@ This operation has been discussed in detail. Given a new data and the target nod
 
 void InsertBefore (Node *curr, int data)
 {
-    Node *newNode = new Node(____________________________);
+    Node *newNode = new Node(data);
     
-    ______________________________________________________;
+    newNode.next->curr;
     
-    ______________________________________________________;
+    curr->newNode;
 }
 
 \end{lstlisting}
@@ -227,21 +227,21 @@ void RemoveDuplication (List *list)
     {
         if (curr->data == curr->next->data)
         {
-            ______________________________________________________;
+            Node *next_next = curr->next->next;
                         
-            if (_____________________________________)
+            if (curr->next == list->tail)
             {
-                __________________________________________________;
+                curr->next =NULL;
             }
             
-            ______________________________________________________;
+            delete(curr->next);
             
-            __________________________=___________________________;
+            curr->next = next_next;
 
         }
         else
         {
-            ______________________________________________________;
+            curr=curr->next;
         }
     }
 }
@@ -270,26 +270,26 @@ void MoveHead (List *src, List *dst)
     Node *headNode = src->head;
     assert(headNode);
     
-    __________________________________________________________;
+    src=src->next;
     
         
-    if (____________________________________)
+    if (src->head==src->tail)
     {
         src->tail = NULL;
     }
     
-    __________________________________________________________;
+    dst->tail->next=*newNode;
     
     if (dst->head == NULL)
     {
-        ______________________________________________________;
+       dst=dst->next;
     }
     else
     {
-        ______________________________________________________;
+        dst->tail=dst->tail->next;
     }
     
-    __________________________________________________________;
+    dst->tail->next=NULL;
     
 }
 
@@ -324,13 +324,13 @@ void AlternateSplit (List *src, List *a, List *b)
 {
     assert (a->head == NULL && b->head == NULL);
     
-    while (______________________________________)
+    while (src->head != NULL)
     {
-        __________________________________________________________;
+        MoveHead(src,a);
 
-     	if (_____________________________________)
+     	if (src->head != NULL)
      	{
-     	    ______________________________________________________;
+     	MoveHead(a,b);
      	}
     }
 }
@@ -371,16 +371,16 @@ void SortedMerge (List *a, List *b, List *dst)
     {      
         if (a->head == NULL)
         {
-            if (______________________________)
+            if (0==0)
             {
-                 _____________________________________________________;
+                dst->tail->next=a->head;
                  
-                 _____________________________________________________;
-                 
-                 b->head = b->tail = NULL;
+                dst->tail = a->tail;
+                
+                b->head = b->tail = NULL;
             }
             
-            __________________________________________________________;
+            break;
         }
         
         if (b->head == NULL)
@@ -391,11 +391,11 @@ void SortedMerge (List *a, List *b, List *dst)
      
         if (a->head->data < b->head->data)
         {
-            __________________________________________________________;
+            MoveHead(a,dst);
         }   
         else
         {
-            __________________________________________________________;
+            MoveHead(b,dst);
         }
     }
 }
