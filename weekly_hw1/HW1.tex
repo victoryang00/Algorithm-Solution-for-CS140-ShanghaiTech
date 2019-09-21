@@ -215,193 +215,193 @@ Given a linked list in ascending order, you should remove all the nodes with dup
 \hrulefill
 \begin{lstlisting}[language=C++]
 
-void RemoveDuplication (List *list)
-{
-    Node *curr = list->head;
-    if (curr == NULL) 
+    void RemoveDuplication (List *list)
     {
-        return;
-    }
-	
-    while (curr->next != NULL)
-    {
-        if (curr->data == curr->next->data)
+        Node *curr = list->head;
+        if (curr == NULL) 
         {
-            Node *next_next = curr->next->next;
-                        
-            if (curr->next == list->tail)
-            {
-                curr->next =NULL;
-            }
-            
-            delete(curr->next);
-            
-            curr->next = next_next;
-
+            return;
         }
-        else
-        {
-            curr=curr->next;
-        }
-    }
-}
-\end{lstlisting}
-\pagebreak
-
-
-%--------------------------------------------------------------
-\question{3}{Move Head}
-Given a non-empty linked list \texttt{src} and a linked list \texttt{dst}. Move the head node of \texttt{src} to the tail of \texttt{dst}. For example: \\
-
-\texttt{Before:}\\
-\texttt{src: 1 -> 2 -> 3 -> NULL}\\
-\texttt{dst: 4 -> 5 -> 6 -> NULL}\\
-\\
-\texttt{After:}\\
-\texttt{src: 2 -> 3 -> NULL}\\
-\texttt{dst: 4 -> 5 -> 6 -> 1 -> NULL}\\
-
-
-\hrulefill
-\begin{lstlisting}[language=C++]
-
-void MoveHead (List *src, List *dst)
-{
-    Node *headNode = src->head;
-    assert(headNode);
-    
-    src=src->next;
-    
         
-    if (src->head==src->tail)
-    {
-        src->tail = NULL;
-    }
-    
-    dst->tail->next=*newNode;
-    
-    if (dst->head == NULL)
-    {
-       dst=dst->next;
-    }
-    else
-    {
-        dst->tail=dst->tail->next;
-    }
-    
-    dst->tail->next=NULL;
-    
-}
-
-\end{lstlisting}
-\pagebreak
-
-%--------------------------------------------------------------
-\question{4}{Alternate Split}
-Given a linked list \texttt{src}, split it to two linked list  \texttt{a} and \texttt{b} in alternating order. For example:\\
-
-\texttt{Before:}\\
-\texttt{src: 1 -> 2 -> 3 -> 4 -> 5 -> NULL}\\
-\texttt{a: NULL}\\
-\texttt{b: NULL}\\
-\\
-\texttt{After:}\\
-\texttt{src: NULL}\\
-\texttt{a: 1 -> 3 -> 5 -> NULL}\\
-\texttt{b: 2 -> 4 -> NULL}\\
-
-\begin{enumerate}
-	\item[$\bullet$] You may assume \texttt{src} has more than 4 elements, i.e. after this function, \texttt{head} and \texttt{tail} of \texttt{a} and\texttt{b} point to different nodes.
-	\item[$\bullet$] \texttt{a} and \texttt{b} are initially empty.
-	\item[$\bullet$] Use \texttt{MoveHead} to implement this function.
-\end{enumerate}
-
-
-\hrulefill
-\begin{lstlisting}[language=C++]
-
-void AlternateSplit (List *src, List *a, List *b)
-{
-    assert (a->head == NULL && b->head == NULL);
-    
-    while (src->head != NULL)
-    {
-        MoveHead(src,a);
-
-     	if (src->head != NULL)
-     	{
-     	MoveHead(src,b);
-     	}
-    }
-}
-
-\end{lstlisting}
-\pagebreak
-
-
-%--------------------------------------------------------------
-\question{5}{Sorted Merge}
-Given two non-empty sorted (in ascending order) linked list \texttt{a} and \texttt{b}. Merge them to a single empty sorted (in ascending order) linked list \texttt{dst}.
-
-\texttt{Before:}\\
-\texttt{a: 1 -> 4 -> 6 -> 7 -> NULL}\\
-\texttt{b: 2 -> 3 -> 5 -> NULL}\\
-\texttt{dst: NULL}\\
-\\
-\texttt{After:}\\
-\texttt{a: NULL}\\
-\texttt{b: NULL}\\
-\texttt{dst: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> NULL}\\
-
-\begin{enumerate}
-	\item[$\bullet$] You may assume all the elements' data are unique.
-	\item[$\bullet$] Use \texttt{MoveHead} to implement this function.
-\end{enumerate}
-\newpage
-
-\hrulefill
-\begin{lstlisting}[language=C++]
-
-void SortedMerge (List *a, List *b, List *dst)
-{
-    assert(dst->head == NULL);
-    assert(a->head != NULL && b->head != NULL);
-        
-    while (true)
-    {      
-        if (a->head == NULL)
+        while (curr->next != NULL)
         {
-            if (0==0)
+            if (curr->data == curr->next->data)
             {
-                dst->tail->next=a->head;
-                 
-                dst->tail = a->tail;
+                Node *next_next = curr->next->next;
+                            
+                if (curr->tail == NULL)
+                {
+                    curr->next =NULL;
+                }
                 
-                b->head = b->tail = NULL;
+                delete(curr->next);
+                
+                curr->next = next_next;
+    
             }
-            
-            break;
-        }
-        
-        if (b->head == NULL)
-        {
-            // similar to above, ignore it
-            ... ...
-        }
-     
-        if (a->head->data < b->head->data)
-        {
-            MoveHead(a,dst);
-        }   
-        else
-        {
-            MoveHead(b,dst);
+            else
+            {
+                curr=curr->next;
+            }
         }
     }
-}
-
-\end{lstlisting}
-\pagebreak
-
-
-\end{document}
+    \end{lstlisting}
+    \pagebreak
+    
+    
+    %--------------------------------------------------------------
+    \question{3}{Move Head}
+    Given a non-empty linked list \texttt{src} and a linked list \texttt{dst}. Move the head node of \texttt{src} to the tail of \texttt{dst}. For example: \\
+    
+    \texttt{Before:}\\
+    \texttt{src: 1 -> 2 -> 3 -> NULL}\\
+    \texttt{dst: 4 -> 5 -> 6 -> NULL}\\
+    \\
+    \texttt{After:}\\
+    \texttt{src: 2 -> 3 -> NULL}\\
+    \texttt{dst: 4 -> 5 -> 6 -> 1 -> NULL}\\
+    
+    
+    \hrulefill
+    \begin{lstlisting}[language=C++]
+    
+    void MoveHead (List *src, List *dst)
+    {
+        Node *headNode = src->head;
+        assert(headNode);
+        
+        src->head=src->head->next;
+        
+            
+        if (src->tail==NULL)
+        {
+            src->head = NULL;
+        }
+        
+        headNode->next=NULL;
+        
+        if (dst->head == NULL)
+        {
+           dst->head=headNode;
+        }
+        else
+        {
+            dst->head->next=headNode;
+        }
+        
+        dst->tail=headNode;
+        
+    }
+    
+    \end{lstlisting}
+    \pagebreak
+    
+    %--------------------------------------------------------------
+    \question{4}{Alternate Split}
+    Given a linked list \texttt{src}, split it to two linked list  \texttt{a} and \texttt{b} in alternating order. For example:\\
+    
+    \texttt{Before:}\\
+    \texttt{src: 1 -> 2 -> 3 -> 4 -> 5 -> NULL}\\
+    \texttt{a: NULL}\\
+    \texttt{b: NULL}\\
+    \\
+    \texttt{After:}\\
+    \texttt{src: NULL}\\
+    \texttt{a: 1 -> 3 -> 5 -> NULL}\\
+    \texttt{b: 2 -> 4 -> NULL}\\
+    
+    \begin{enumerate}
+        \item[$\bullet$] You may assume \texttt{src} has more than 4 elements, i.e. after this function, \texttt{head} and \texttt{tail} of \texttt{a} and\texttt{b} point to different nodes.
+        \item[$\bullet$] \texttt{a} and \texttt{b} are initially empty.
+        \item[$\bullet$] Use \texttt{MoveHead} to implement this function.
+    \end{enumerate}
+    
+    
+    \hrulefill
+    \begin{lstlisting}[language=C++]
+    
+    void AlternateSplit (List *src, List *a, List *b)
+    {
+        assert (a->head == NULL && b->head == NULL);
+        
+        while (src->head != NULL)
+        {
+            MoveHead(src,a);
+    
+             if (src->head != NULL)
+             {
+             MoveHead(a,b);
+             }
+        }
+    }
+    
+    \end{lstlisting}
+    \pagebreak
+    
+    
+    %--------------------------------------------------------------
+    \question{5}{Sorted Merge}
+    Given two non-empty sorted (in ascending order) linked list \texttt{a} and \texttt{b}. Merge them to a single empty sorted (in ascending order) linked list \texttt{dst}.
+    
+    \texttt{Before:}\\
+    \texttt{a: 1 -> 4 -> 6 -> 7 -> NULL}\\
+    \texttt{b: 2 -> 3 -> 5 -> NULL}\\
+    \texttt{dst: NULL}\\
+    \\
+    \texttt{After:}\\
+    \texttt{a: NULL}\\
+    \texttt{b: NULL}\\
+    \texttt{dst: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> NULL}\\
+    
+    \begin{enumerate}
+        \item[$\bullet$] You may assume all the elements' data are unique.
+        \item[$\bullet$] Use \texttt{MoveHead} to implement this function.
+    \end{enumerate}
+    \newpage
+    
+    \hrulefill
+    \begin{lstlisting}[language=C++]
+    
+    void SortedMerge (List *a, List *b, List *dst)
+    {
+        assert(dst->head == NULL);
+        assert(a->head != NULL && b->head != NULL);
+            
+        while (true)
+        {      
+            if (a->head == NULL)
+            {
+                if (0==0)
+                {
+                    dst->tail->next=b->head;
+                     
+                    dst->tail = a->tail;
+                    
+                    b->head = b->tail = NULL;
+                }
+                
+                break;
+            }
+            
+            if (b->head == NULL)
+            {
+                // similar to above, ignore it
+                ... ...
+            }
+         
+            if (a->head->data < b->head->data)
+            {
+                MoveHead(a,dst);
+            }   
+            else
+            {
+                MoveHead(b,dst);
+            }
+        }
+    }
+    
+    \end{lstlisting}
+    \pagebreak
+    
+    
+    \end{document}
