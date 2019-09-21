@@ -273,12 +273,12 @@ void MoveHead (List *src, List *dst)
     src->head=src->head->next;
     
         
-    if (src->head==src->tail)
+    if (src->tail==NULL)
     {
         src->head = NULL;
     }
     
-    ;
+    headNode->next=NULL;
     
     if (dst->head == NULL)
     {
@@ -289,7 +289,7 @@ void MoveHead (List *src, List *dst)
         dst->head->next=headNode;
     }
     
-    dst->tail->next=headNode;
+    dst->tail=headNode;
     
 }
 
