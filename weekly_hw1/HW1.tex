@@ -229,7 +229,7 @@ void RemoveDuplication (List *list)
         {
             Node *next_next = curr->next->next;
                         
-            if (curr->next == list->tail)
+            if (curr->tail == NULL)
             {
                 curr->next =NULL;
             }
@@ -270,26 +270,26 @@ void MoveHead (List *src, List *dst)
     Node *headNode = src->head;
     assert(headNode);
     
-    src=src->next;
+    src->head=src->head->next;
     
         
     if (src->head==src->tail)
     {
-        src->tail = NULL;
+        src->head = NULL;
     }
     
-    dst->tail->next=*newNode;
+    ;
     
     if (dst->head == NULL)
     {
-       dst=dst->next;
+       dst->head=headNode;
     }
     else
     {
-        dst->tail=dst->tail->next;
+        dst->head->next=headNode;
     }
     
-    dst->tail->next=NULL;
+    dst->tail->next=headNode;
     
 }
 
@@ -373,7 +373,7 @@ void SortedMerge (List *a, List *b, List *dst)
         {
             if (0==0)
             {
-                dst->tail->next=a->head;
+                dst->tail->next=b->head;
                  
                 dst->tail = a->tail;
                 
