@@ -220,12 +220,18 @@ Given a linked list in ascending order, you should remove all the nodes with dup
         Node *curr = list->head;
         if (curr == NULL) 
         {
+<<<<<<< HEAD
             return;
         }
         
         while (curr->next != NULL)
         {
             if (curr->data == curr->next->data)
+=======
+            Node *next_next = curr->next->next;
+                        
+            if (curr->tail == NULL)
+>>>>>>> 58dfc95db2d7b27807017089845cd8f15e89084f
             {
                 Node *next_next = curr->next->next;
                             
@@ -293,6 +299,7 @@ Given a linked list in ascending order, you should remove all the nodes with dup
         
     }
     
+<<<<<<< HEAD
     \end{lstlisting}
     \pagebreak
     
@@ -316,6 +323,28 @@ Given a linked list in ascending order, you should remove all the nodes with dup
         \item[$\bullet$] Use \texttt{MoveHead} to implement this function.
     \end{enumerate}
     
+=======
+    src->head=src->head->next;
+    
+        
+    if (src->tail==NULL)
+    {
+        src->head = NULL;
+    }
+    
+    headNode->next=NULL;
+    
+    if (dst->head == NULL)
+    {
+       dst->head=headNode;
+    }
+    else
+    {
+        dst->head->next=headNode;
+    }
+    
+    dst->tail=headNode;
+>>>>>>> 58dfc95db2d7b27807017089845cd8f15e89084f
     
     \hrulefill
     \begin{lstlisting}[language=C++]
@@ -371,6 +400,7 @@ Given a linked list in ascending order, you should remove all the nodes with dup
         {      
             if (a->head == NULL)
             {
+<<<<<<< HEAD
                 if (0==0)
                 {
                     dst->tail->next=b->head;
@@ -379,6 +409,11 @@ Given a linked list in ascending order, you should remove all the nodes with dup
                     
                     b->head = b->tail = NULL;
                 }
+=======
+                dst->tail->next=b->head;
+                 
+                dst->tail = a->tail;
+>>>>>>> 58dfc95db2d7b27807017089845cd8f15e89084f
                 
                 break;
             }
