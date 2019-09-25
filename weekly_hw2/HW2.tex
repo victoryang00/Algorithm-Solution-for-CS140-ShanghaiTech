@@ -1,0 +1,209 @@
+%=======================02-713 LaTeX template, following the 15-210 template==================
+%
+% You don't need to use LaTeX or this template, but you must turn your homework in as
+% a typeset PDF somehow.
+%
+% How to use:
+%    1. Update your information in section "A" below
+%    2. Write your answers in section "B" below. Precede answers for all 
+%       parts of a question with the command "\question{n}{desc}" where n is
+%       the question number and "desc" is a short, one-line description of 
+%       the problem. There is no need to restate the problem.
+%    3. If a question has multiple parts, precede the answer to part x with the
+%       command "\part{x}".
+%    4. If a problem asks you to design an algorithm, use the commands
+%       \algorithm, \correctness, \runtime to precede your discussion of the 
+%       description of the algorithm, its correctness, and its running time, respectively.
+%    5. You can include graphics by using the command \includegraphics{FILENAME}
+%
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{amsfonts}
+\usepackage[english]{babel}
+\usepackage{framed}
+\usepackage{enumerate}
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\newtheorem{Q}{Question}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+\setlength{\headheight}{13.6pt}
+\newcommand\question[2]{\vspace{.25in}\hrule\textbf{#1: #2}\vspace{.5em}\hrule\vspace{.10in}}
+\renewcommand\part[1]{\vspace{.10in}\textbf{(#1)}}
+\newcommand\algorithm{\vspace{.10in}\textbf{Algorithm: }}
+\newcommand\correctness{\vspace{.10in}\textbf{Correctness: }}
+\newcommand\runtime{\vspace{.10in}\textbf{Running time: }}
+\pagestyle{fancyplain}
+\lhead{\textbf{\NAME\ \ \ \ \ \ \ \ \ \ \ \ \ANDREWID}}
+\chead{\textbf{HW\HWNUM}}
+\rhead{Due date: 11:59 PM, September 29, 2019}
+\begin{document}\raggedright
+%Section A==============Change the values below to match your information==================
+\newcommand\NAME{Your Name:}  % your name
+\newcommand\ANDREWID{Your ID:}     % your andrew id
+\newcommand\HWNUM{3}              % the homework number
+%Section B==============Put your answers to the questions below here=======================
+
+% no need to restate the problem --- the graders know which problem is which,
+% but replacing "The First Problem" with a short phrase will help you remember
+% which problem this is when you read over your homeworks to study.
+
+\section{(5') Stack, Queue and Complexity Analysis}
+Each question has one or more correct answer(s). Select all the correct answer(s). For each question, you get $0$ point if you select one or more wrong answers, but you get $0.5$ point if you select a non-empty subset of the correct answers.\\
+\textit{Note that you should write you answers of section 1 in the table below.}
+\begin{table}[htbp]
+	\begin{tabular}{|p{2cm}|p{2cm}|p{2cm}|p{2cm}|p{2cm}|}
+		\hline 
+		Question 1 & Question 2 & Question 3 & Question 4 & Question 5  \\ 
+		\hline 
+		&  &  &  & \\ 
+		\hline 
+	\end{tabular} 
+\end{table}
+\begin{Q}
+	In the lectures of Week 2, suppose we implement a circular queue by using an array with the index range from $1$ to $n$, then what the size of this queue would be? We assume that the queue is non-empty.
+	\begin{enumerate}[(A)]
+		\item $rear-front+1$
+		\item $(rear-front+1)\%n$
+		\item $(rear-front+n)\%n$
+		\item $(rear-front+n)\%n+1$
+	\end{enumerate}
+\end{Q}
+
+
+\begin{Q}
+	Which of the following is known to be correct? 
+	\begin{enumerate}[(A)]
+		\item Stack is a linear data structure and the operations on stacks are more restricted, the same is true for queue.
+		\item Lists store elements in sequential locations in memory.
+		\item Both stacks and queues allow us insert or delete an element at the front.
+		\item We can use two queues to implement stack.
+	\end{enumerate}
+\end{Q}
+
+
+\begin{Q}
+	Which of the following is/are applications of queue and stack respectively?
+	\begin{enumerate}[(A)]
+		\item \textbf{Queue}: A resource shared by multiple users/processes; \textbf{Stack}: Handling function calls
+		\item \textbf{Queue}: Loading Balancing; \textbf{Stack}: Reverse-Polish Notation
+		\item \textbf{Queue}: Handling of interrupts in real-time systems; \textbf{Stack}: Compilers/Word Processors
+		\item \textbf{Queue}: IO Buffers; \textbf{Stack}: Arithmetic expression evaluation
+	\end{enumerate}
+\end{Q}
+
+
+
+\begin{Q}
+	Read the following code, what function does it realize? \\
+	\begin{lstlisting}[language=C++]
+	  void Q4(Queue &Q) 
+	  {
+	    Stack S;
+		int d;
+		InitStack(S);
+		while(!QueueEmpty(Q))
+		{
+		  DeQueue(Q,d)
+		  Push(S,d);
+		}
+		while(!StackEmpty(S))
+		{
+		  Pop(S,d);
+		  EnQueue(Q,d);
+		}
+	  }
+	\end{lstlisting}
+	\begin{enumerate}[(A)]
+		\item Use stack to reverse the queue.
+		\item Use queue to reverse the stack.
+		\item Use stack to implement the queue.
+		\item Use queue to implement the stack.
+	\end{enumerate}
+\end{Q}
+
+
+
+\begin{Q}
+	Which of the following comparison is correct?  
+	\begin{enumerate}[(A)]
+		\item $n^2 + n^3 = O(n^4)$
+		\item  $\log_2 n = \Theta(\log n)$
+		\item  $\log^2 n = \Omega(\log\log n)$
+		\item $n! = \omega(n^n)$
+	\end{enumerate}
+\end{Q}
+
+
+\section{(10') Stack and Queue}
+\begin{Q}
+\textbf{(2')}The following post-fix expression (Reverse-Polish Notation) with single digit operands is evaluated usng a stack:\\
+$$8\ 2\ 3\ \hat\ /\ 2\ 3\ *\ +\ 5\ 1\ *\ - $$
+
+Note that \^\ is the exponentiation operator. Please write down the corresponding in-fix notation A and the final result:\\
+\vspace{0.5in}
+\end{Q}
+
+
+\begin{Q}
+\textbf{(4')}\textbf{Describe} how to implement a queue using a singly-linked list. You can use pseudocode or natural language to describe all the operations, especially the key operations.
+\end{Q}
+\vspace{2.5in}
+\begin{Q}
+\textbf{(1')}If we use an array with size $N$ to implement a normal queue, it gets full when the index \textbf{Back} pointing to the index = \rule[-10pt]{2cm}{0.05em}
+\vspace{0.1in}
+\end{Q}
+
+\begin{Q}
+\textbf{(1')}By implementing the following  operations on stack, the value of x is \rule[-10pt]{2cm}{0.05em}\\
+InitStack(st); Push(st,a); Push(st,b); Pop(st,x); Top(st,x);
+\vspace{0.1in}
+\end{Q}
+
+\begin{Q}
+\textbf{(2')}What dose "stack overflow" and "stack underflow" mean? (give a short explanation)
+\vspace{1.5in}
+\end{Q}
+
+
+
+\section{(8') Complexity Analysis}
+\begin{Q}
+\textbf{(3')}Given a fraction of a code as the following, write down the time complexity for each \textbf{for} loop. 
+
+\begin{lstlisting}[language=C++]
+	for ( i=1; i<n; i*=2) {                    _______________________ 
+	  for( j=n; j>0; j/=2) {                   _______________________ 
+		  for ( k=j; k<n; k+=2) {          _______________________ 
+			sum += (i + j*k)
+		  }
+	  }
+	}
+\end{lstlisting}
+\end{Q}
+
+
+\begin{Q}
+\textbf{(5')}	Calculate the average processing time $T(n)$ of the following recursive algorithm. Suppose that it takes one unit time for \textbf{random( int n )} to return a random integer which is uniformly distributed in the range [0,n]. Also note that $T(0)=0$. \\
+	\textit{Hints}:The equation $\frac{1}{1*2}+\frac{1}{2*3}+...+\frac{1}{n*(n+1)}=\frac{n}{n+1}$ might be needed.
+	
+	\begin{lstlisting}[language=C++]
+	int hw( int n) {
+	  if ( n <= 0 ) return 0;
+	    else {
+		  int i = random( n-1 );
+		  return hw( i ) + hw( n-1-i );
+		}
+	}
+	\end{lstlisting}
+\end{Q}
+
+
+
+
+
+
+\end{document}
