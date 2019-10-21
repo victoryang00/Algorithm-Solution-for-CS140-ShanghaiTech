@@ -1,14 +1,33 @@
 #include <iostream>
-// #include <stack>
-using namespace std;
 
-// void showstack(stack<int> s) {
-// while (!s.empty()) {
-// cout << '\t' << s.top();
-// s.pop();
-// }
-// cout << '\n';
-// }
+using namespace std;
+const int   buffsize = 1e5;
+char        buf[ buffsize ], *pp = buf - 1;
+int         readsize = 0, freadsize = 0;
+inline void readinit() {
+    fread(buf + (((readsize + buffsize - 1) % buffsize >= buffsize / 2 - 1) ? 0 : buffsize / 2), 1,
+          buffsize / 2, stdin);
+    freadsize += buffsize / 2;
+}
+inline int read() {
+    if (readsize + buffsize / 2 > freadsize)
+        readinit();
+    while ((++readsize, *++pp) < '-')
+        if (pp == buf + buffsize - 1)
+            pp = buf - 1;
+    register int x = *pp & 15;
+    if (pp == buf + buffsize - 1)
+        pp = buf - 1;
+    while ((++readsize, *++pp) > '-') {
+        x = x * 10 + (*pp & 15);
+        if (pp == buf + buffsize - 1)
+            pp = buf - 1;
+    }
+    if (pp == buf + buffsize - 1)
+        pp = buf - 1;
+    return x;
+}
+
 class Node {
 public:
     int   data;
@@ -43,9 +62,9 @@ int look_back(Node *head);
 int main() {
     List *list = new List();
     int   value, n, i = 0;
-    cin >> n;
+    n = read();
     while (i < n) {
-        cin >> value;
+        value = read();
         list->push_back(value);
         i++;
     }
@@ -53,38 +72,7 @@ int main() {
     cout << ans;
     return 0;
 }
-// int main() {
-//     stack<int> s;
-//     int        k, *m, count;
-//     cin >> k;
-//     if (k == 0)
-//         return 0;
-//     for (int i = 0; i < k; ++i) {
-//         cin >> m[ i ];
-//     }
-//     s.push(m[ 0 ]);
-//     for (int i = 0; i < k; ++i) {
-//         if (m[ i ] <= s.top()) {
-//             s.push(m[ i ]);
-//             count++;
-//         } else {
-//             while (!s.empty()) {
-//                 if (m[ i ] > s.top()) {
-//                     s.pop();
-//                     count++;
-//                 } else {
-//                     break;
-//                 }
-//             }
-//             if (s.empty()) {
-//                 count++;
-//             }
-//             s.push(m[ i ]);
-//         }
-//     }
 
-//     return 0;
-// }
 int look_back(Node *head) {
     Node *p = head;
     int   curr, max = 0, count = 0;
