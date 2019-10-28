@@ -8,9 +8,31 @@ using namespace std;
 const int MAX=2e4+5;
 char ss[1<<17],*A=ss,*B=ss;
 inline char gc(){if(A==B){B=(A=ss)+fread(ss,1,1<<17,stdin);if(A==B)return EOF;}return *A++;};
-template<class T>inline void read(T&x){
-    char c;re y=1;while(c=gc(),c<48||57<c)if(c=='-')y=-1;x=c^48;
-    while(c=gc(),47<c&&c<58)x=(x<<1)+(x<<3)+(c^48);x*=y;
+const int   buffsize = 1e5;
+char        buf[ buffsize ], *pp = buf - 1;
+int         readsize = 0, freadsize = 0;
+inline void readinit() {
+    fread(buf + (((readsize + buffsize - 1) % buffsize >= buffsize / 2 - 1) ? 0 : buffsize / 2), 1,
+          buffsize / 2, stdin);
+    freadsize += buffsize / 2;
+}
+inline int read() {
+    if (readsize + buffsize / 2 > freadsize)
+        readinit();
+    while ((++readsize, *++pp) < '-')
+        if (pp == buf + buffsize - 1)
+            pp = buf - 1;
+    register int x = *pp & 15;
+    if (pp == buf + buffsize - 1)
+        pp = buf - 1;
+    while ((++readsize, *++pp) > '-') {
+        x = x * 10 + (*pp & 15);
+        if (pp == buf + buffsize - 1)
+            pp = buf - 1;
+    }
+    if (pp == buf + buffsize - 1)
+        pp = buf - 1;
+    return x;
 }
 int n,cnt,w,sss,ans;
 int fi[MAX],dis[MAX],fa[MAX];
