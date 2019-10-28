@@ -45,6 +45,12 @@
         "vector": "cpp",
         "random": "cpp",
         "ratio": "cpp",
-        "queue": "cpp"
+        "__hash_table": "cpp",
+        "__tree": "cpp",
+        "filesystem": "cpp",
+        "forward_list": "cpp",
+        "list": "cpp",
+        "*.tcc": "cpp",
+        "__node_handle": "cpp"
     }
 }

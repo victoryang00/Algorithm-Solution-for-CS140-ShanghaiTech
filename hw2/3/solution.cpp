@@ -5,7 +5,7 @@
 #include <string.h>
 using namespace std;
 #define HASHSIZE 5
-#define MAXSIZE 300005
+#define MAXSIZE 30005
 int list_arr[ MAXSIZE ][ MAXSIZE ];
 struct list {
 
@@ -42,7 +42,15 @@ struct list {
         list_arr[ index ][ 1 ] = time;
     }
     void remove(int num) {
-        count--;
+        int num1 = num;
+        while (num1 >= 0) {
+            if (list_arr[ count ][ 1 ] >= num1) {
+                list_arr[ count ][ 1 ] -= num1;
+            } else {
+                count--;
+                num1 -= list_arr[ count ][ 1 ];
+            }
+        }
     }
     void stack_remove(int index, int result) {
         if (list_arr[ index ][ 1 ] > list_arr[ index + 1 ][ 1 ]) {
@@ -106,36 +114,9 @@ int main() {
         }
     }
     for (int i = 0; i < m; ++i) {
-        if (key[ list_arr[ i ][ 0 ] ][ list_arr[ i + 1 ][ 0 ] ] < 0) {
-        }
-    }
-    int index = 0;
-    for (int i = 0; i < k; ++i) {
-        // for (int j = 0; j < i - k - 1; ++j) {
-        if (num[ i ] > num[ i ]) {
-            index = i;
-        } else {
-            index = i + 1;
-        }
-        // }
-    }
-    int size = num[ index ] + 1;
-    for (int i = 0; i < k - 1; ++i) {
-        if (ht.lookup(read_char(num[ i ], num[ i + 1 ]))) {
-            for (int j = 0; j < size; ++j) {
-                if (num[ i - j ] == num[ i + 1 + j ]) {
-                    q.remove(i - j);
-                    q.remove(i + 1 + j);
-                } else {
-                    break;
-                }
-            }
-        }
-    }
-    for (int i = 0; i < k - 1; ++i) {
-        if (q.get_value(i) == -2) {
-            q.delete1(i);
-            k--;
+        if (key[ list_arr[ i ][ 0 ] ][ list_arr[ i + 1 ][ 0 ] ] >= 0) {
+            opt.stack_remove(i, key[ list_arr[ i ][ 0 ] ][ list_arr[ i + 1 ][ 0 ] ]);
+            --i;
         }
     }
 }
