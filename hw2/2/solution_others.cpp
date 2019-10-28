@@ -5,6 +5,32 @@
 int g_init;
 int ans = 0;
 using namespace std;
+const int   buffsize = 1e5;
+char        buf[ buffsize ], *pp = buf - 1;
+int         readsize = 0, freadsize = 0;
+inline void readinit() {
+    fread(buf + (((readsize + buffsize - 1) % buffsize >= buffsize / 2 - 1) ? 0 : buffsize / 2), 1,
+          buffsize / 2, stdin);
+    freadsize += buffsize / 2;
+}
+inline int read() {
+    if (readsize + buffsize / 2 > freadsize)
+        readinit();
+    while ((++readsize, *++pp) < '-')
+        if (pp == buf + buffsize - 1)
+            pp = buf - 1;
+    register int x = *pp & 15;
+    if (pp == buf + buffsize - 1)
+        pp = buf - 1;
+    while ((++readsize, *++pp) > '-') {
+        x = x * 10 + (*pp & 15);
+        if (pp == buf + buffsize - 1)
+            pp = buf - 1;
+    }
+    if (pp == buf + buffsize - 1)
+        pp = buf - 1;
+    return x;
+}
 
 template <typename Type> class Node {
 public:
@@ -50,7 +76,6 @@ public:
         }
     };
     Type pop() {
-        ;
         Node<Type> *temp = head;
         head             = head->next;
         return temp->m_element;
@@ -97,41 +122,7 @@ public:
     }
 };
 
-template <typename Type> class Stack {
-public:
-    List<Type> *m_list;
-    Type        pop() {
-        if (m_list->is_empty()) {
-            // cout<<"invalid\n";
-            return nullptr;
-        }
-        Type t = m_list->pop();
-        return t;
-    }
-    void push(Type val) {
-        m_list->push_front(val);
-    }
-    Stack() {
-        m_list = new List<Type>();
-    }
-    bool is_empty() {
-        return m_list->is_empty();
-    }
-};
-
-template <typename Type> void show_list(Node<Type> *head);
-int                           min_amp(Tree *root);
-
-template <typename Type> void show_list(Node<Type> *head) {
-    Node<Type> *temp = head;
-    if (temp == nullptr)
-        cout << "null";
-    while (temp != nullptr) {
-        cout << temp->m_element << "  ";
-        temp = temp->next;
-    }
-    cout << endl;
-}
+int min_amp(Tree *root);
 
 int min_amp(Tree *root) {
 
@@ -149,7 +140,6 @@ int min_amp(Tree *root) {
     } else {
         ans++;
         root->max_child = 0;
-        // cout<<"position:"<<root->m_decay<<",maxchild="<<root->max_child<<endl;
     }
     if (root->m_decay > root->m_parent->max_child) {
         root->m_parent->max_child = root->m_decay;
@@ -159,7 +149,7 @@ int main() {
     int  max          = 0;
     bool has_solution = true;
     int  n_nodes, id = 1, n_child, decay;
-    cin >> n_nodes;
+    n_nodes             = read();
     Tree *         root = new Tree(nullptr, 0);
     Tree *         curr = root;
     Tree *         temp;
@@ -167,10 +157,10 @@ int main() {
     // construct the tree
     // first read the number of the nodes
     for (int i = 0; i < n_nodes; ++i) {
-        cin >> n_child;
+        n_child = read();
         for (int j = 0; j < n_child; ++j) {
-            cin >> id >> decay;
-            // cout<<"id= "<<id<<" deacy= "<<decay<<endl;
+            id    = read();
+            decay = read();
             if (decay > max) {
                 max = decay;
             }
@@ -178,23 +168,14 @@ int main() {
             curr->children->push_back(temp);
             q_in->enque(temp);
         }
-        // show_list(q_in->m_list->head);
         curr = q_in->deque();
     }
-    //
-    cin >> g_init;
+    g_init = read();
     min_amp(root);
 
     if (max > g_init) {
         has_solution = false;
     }
-
-    // cout<<"power:"<<init<<endl;
-
-    // show_list(root->children->head);
-
-    // cout<<"\n\nstart...\n";
-
     if (!has_solution) {
         cout << "No solution.";
     } else {
