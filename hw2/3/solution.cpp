@@ -1,42 +1,53 @@
 #include <iostream>
-// #include <sstream>
-// #include <stdio.h>
-// #include <stdlib.h>
-// #include <string.h>
 using namespace std;
-#define HASHSIZE 5
-#define MAXSIZE 300005
+#define re register int
+const int   HASHSIZE = 5;
+const int   MAXSIZE  = 3e5 + 5;
+const int   NMAX     = 3e3 + 5;
+char        ss[ 1 << 17 ], *A = ss, *B = ss;
+inline char gc() {
+    if (A == B) {
+        B = (A = ss) + fread(ss, 1, 1 << 17, stdin);
+        if (A == B)
+            return EOF;
+    }
+    return *A++;
+};
+template <class T> inline void read(T &x) {
+    char c;
+    re   y = 1;
+    while (c = gc(), c < 48 || 57 < c)
+        if (c == '-')
+            y = -1;
+    x = c ^ 48;
+    while (c = gc(), 47 < c && c < 58)
+        x = (x << 1) + (x << 3) + (c ^ 48);
+    x *= y;
+}
 int list_arr[ MAXSIZE ][ HASHSIZE ];
-int key[ 3000 ][ 3000 ];
+int key[ NMAX ][ NMAX ];
 struct list {
     int  count = -1;
     void push_back(int val, int time) {
         count++;
         list_arr[ count ][ 0 ] = val;
         list_arr[ count ][ 1 ] = time;
-        // for (int j = 0; j < 10; j++)
-        //     cout << count << list_arr[ j ][ 0 ] - 1 << " " << list_arr[ j ][ 1 ] << " " << endl;
     }
     void insert(int index, int val, int time) {
         ++count;
         for (int i = count - 1; i >= index; --i) {
             list_arr[ i + 1 ][ 0 ] = list_arr[ i ][ 0 ];
             list_arr[ i + 1 ][ 1 ] = list_arr[ i ][ 1 ];
-            // for (int j = 0; j < 10; j++)
-            //     cout << list_arr[ j ][ 0 ] - 1 << " " << list_arr[ j ][ 1 ] << " " << endl;
         }
         list_arr[ index ][ 0 ] = val;
         list_arr[ index ][ 1 ] = time;
     }
     void remove(int num) {
-        // int num1 = num;
         while (num > 0) {
             if (list_arr[ count ][ 1 ] >= num) {
                 list_arr[ count ][ 1 ] -= num;
                 num = -1;
-                // cout << list_arr[ count ][ 1 ];
             } else {
-
                 num -= list_arr[ count ][ 1 ];
                 list_arr[ count ][ 1 ] = 0;
                 list_arr[ count ][ 0 ] = 0;
@@ -50,7 +61,7 @@ struct list {
             list_arr[ i ][ 0 ] = list_arr[ i + 1 ][ 0 ];
             list_arr[ i ][ 1 ] = list_arr[ i + 1 ][ 1 ];
         }
-        list_arr[ count ][ 1 ] = 0; // list_arr[ i + 1 ][ 1 ];
+        list_arr[ count ][ 1 ] = 0;
         list_arr[ count ][ 0 ] = 0;
         --count;
     }
@@ -60,15 +71,11 @@ struct list {
             list_arr[ index ][ 1 ] -= list_arr[ index + 1 ][ 1 ];
             this->erase(index + 1);
             this->insert(index + 1, result, temp);
-        } else if (list_arr[ index ][ 1 ] < list_arr[ index + 1 ][ 1 ]) {
+        } else {
             int temp = list_arr[ index ][ 1 ];
             list_arr[ index + 1 ][ 1 ] -= list_arr[ index ][ 1 ];
             this->erase(index);
             this->insert(index + 1, result, temp);
-        } else {
-            this->insert(index, result, list_arr[ index ][ 1 ]);
-            this->erase(index + 1);
-            this->erase(index + 1);
         }
     }
     int sum() {
@@ -85,14 +92,16 @@ struct list {
 
 int main() {
     int n, m, k;
-    cin >> n >> m >> k;
-    // Queue     q;
-    // HashTable ht;
+    read(n);
+    read(m);
+    read(k);
     int num1;
     int num2;
     for (int i = 0; i < m; ++i) {
         int num3;
-        cin >> num1 >> num2 >> num3;
+        read(num1);
+        read(num2);
+        read(num3);
         num1 += 1;
         num2 += 1;
         num3 += 1;
@@ -100,11 +109,10 @@ int main() {
         key[ num1 ][ num2 ] = num3;
     }
     list opt;
-
     for (int i = 0; i < k; ++i) {
         int val1, val2;
-        cin >> val1 >> val2;
-        // cout << val;
+        read(val1);
+        read(val2);
         val1 += 1;
         if (val1 == 0) {
             opt.remove(val2);
@@ -116,8 +124,6 @@ int main() {
     for (int i = 0; i < opt.count; ++i) {
         if (key[ opt.get_val(i) ][ opt.get_val(i + 1) ] > 0) {
             opt.stack_remove(i, key[ opt.get_val(i) ][ opt.get_val(i + 1) ]);
-            // for (int j = 0; j < 10; j++)
-            //     cout << list_arr[ j ][ 0 ] - 1 << " " << list_arr[ j ][ 1 ] << " " << endl;
         }
     }
     cout << opt.sum() << "\n";
