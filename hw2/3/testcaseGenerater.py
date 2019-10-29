@@ -11,7 +11,7 @@ m = 1000
 k = 3000
 
 while True:
-    p = open("2.txt", "w")
+    p = open("1.in", "w")
     p.write(str(n+1)+' '+str(n//2)+' '+str(n//2*2+1)+'\n')
 
     for i in range(0, n, 2):
