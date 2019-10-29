@@ -153,7 +153,7 @@ int main() {
                             //          << " " << endl;
                             opt.stack_remove(k - 1, key[ opt.get_val(k - 1) ][ opt.get_val(k) ]);
                             opt.balance();
-                            j = k;
+                            j = k + 1;
                         }
                     }
                 } else {
