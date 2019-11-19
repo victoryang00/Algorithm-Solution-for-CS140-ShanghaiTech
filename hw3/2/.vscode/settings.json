@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "queue": "cpp",
+        "ios": "cpp",
+        "vector": "cpp",
+        "algorithm": "cpp"
+    }
+}

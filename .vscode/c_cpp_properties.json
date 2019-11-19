@@ -17,20 +17,15 @@
             "intelliSenseMode": "msvc-x64"
         },
         {
-            "name": "wsl",
+            "name": "WSL",
+            "intelliSenseMode": "gcc-x64",
+            "compilerPath": "/usr/bin/gcc",
             "includePath": [
                 "${workspaceFolder}/**"
             ],
             "defines": [],
-            "compilerPath": "/usr/bin/g++",
             "cStandard": "c11",
-            "cppStandard": "c++11",
-            "intelliSenseMode": "gcc-x64",
-            "browse": {
-                "path": [
-                    "${workspaceFolder}/**"
-                ]
-            }
+            "cppStandard": "c++17"
         }
     ],
     "version": 4
