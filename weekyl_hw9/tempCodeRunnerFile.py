@@ -1,2 +1,3 @@
 
-# list_remove=list(set(list_remove))
+        return -1
+    if indexSubsequnce(x, z, y) > -1:
