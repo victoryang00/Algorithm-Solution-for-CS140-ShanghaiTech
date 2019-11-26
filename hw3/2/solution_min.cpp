@@ -3,32 +3,23 @@ using namespace std;
 const int INF = 99999999;
 const int NMAX=2e2+5;
 int a[NMAX*NMAX],e[NMAX][NMAX];
-int quicksort_k_small1_1(int a[], int l, int r, int k)//从大到小排序
+void sort(int array[],int len)
 {
-    if (l >= r) return a[l];
-    int v = a[l];//基准
-
-    //i，j左右分块的初始值, 要保证初始化时，俩个子数组都为空，即，数组右端索引<左端索引
-    int i = l + 1;//a[l+1...i-1]>v
-    int j = r;//a[j+1...r]<v
-
-    while (true){
-        while (i <= r && a[i] > v) ++i;//降序
-        while (j >= l + 1 && a[j] < v) --j;
-        if (i > j) break;//循环结束标志
-        swap(a[i], a[j]);
-        ++i;
-        --j;
+    int i = 0, j = 0;
+    int temp = 0;
+    for (i = 0; i < len-1; i++)
+    {
+        for (j = i+1; j < len; j++)
+        {
+            if (array[j]<array[i])
+            {
+                temp = array[i];
+                array[i] = array[j];
+                array[j] = temp;
+            }
+        }
     }
-    swap(a[l], a[j]);
-
-    int th = r - k;//设定好 降序时 第k小的数 对应 的是 正序时的 第th大的数
-
-    if (j == th) return a[j];
-    if (j < th) return quicksort_k_small1_1(a, j + 1, r, k);
-    else return quicksort_k_small1_1(a, l, j - 1, k);
 }
-
 int main()
 {
         int n , m ,p, t1 , t2 , t3,count=0;
@@ -70,7 +61,6 @@ int main()
                     }
                 }
         }
-
         // for(int i = 1 ; i <= n ; i ++)
         // {
         //         for(int j = 1 ; j <= n ; j ++)
@@ -81,6 +71,7 @@ int main()
         // }
         // for (int i = 0 ; i <count ; i ++)
         //     cout<<a[i]<<endl;
-        cout<<quicksort_k_small1_1(a,0,count-1,p+1)<<endl;
+        sort(a,count);
+        cout<<a[p-1];
         return 0 ;
 }
