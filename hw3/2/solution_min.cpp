@@ -1,68 +1,86 @@
-#include <algorithm>
 #include <iostream>
-#include <queue>
-#include <vector>
 using namespace std;
-const int         N = 5e4 + 10;
-typedef long long LL;
-int               n, m, l, Max, qu[ N ];
-LL                ans[ N ];
-struct edge {
-    int  x, y, z;
-    bool operator<(const edge &rhs) const {
-        return z < rhs.z;
-    }
-};
-vector<edge> G[ N ];
+const int INF = 99999999;
+const int NMAX=2e2+5;
+int a[NMAX*NMAX],e[NMAX][NMAX];
+int quicksort_k_small1_1(int a[], int l, int r, int k)//从大到小排序
+{
+    if (l >= r) return a[l];
+    int v = a[l];//基准
 
-struct dat {
-    LL   u, v, cur, dis;
-    bool operator<(const dat &rhs) const {
-        return dis > rhs.dis;
-    }
-};
+    //i，j左右分块的初始值, 要保证初始化时，俩个子数组都为空，即，数组右端索引<左端索引
+    int i = l + 1;//a[l+1...i-1]>v
+    int j = r;//a[j+1...r]<v
 
-priority_queue<dat> q;
-void                Dijkstra() {
-    while (!q.empty())
-        q.pop();
-    for (int i = 1; i <= n; i++)
-        if (G[ i ].size())
-            q.push((dat){G[ i ][ 0 ].x, G[ i ][ 0 ].y, 0, G[ i ][ 0 ].z});
-    int num = 0;
-    while (!q.empty()) {
-        dat x = q.top();
-        q.pop();
-        ans[ ++num ] = x.dis;
-        if (num >= Max)
-            break;
-        if (x.cur + 1 < G[ x.u ].size())
-            q.push((dat){x.u, G[ x.u ][ x.cur + 1 ].y, x.cur + 1,
-                         x.dis + G[ x.u ][ x.cur + 1 ].z - G[ x.u ][ x.cur ].z});
-        for (int i = 0; i < G[ x.v ].size(); i++) {
-            edge e = G[ x.v ][ i ];
-            q.push((dat){x.v, e.y, 0, x.dis + e.z});
-            break;
-        }
+    while (true){
+        while (i <= r && a[i] > v) ++i;//降序
+        while (j >= l + 1 && a[j] < v) --j;
+        if (i > j) break;//循环结束标志
+        swap(a[i], a[j]);
+        ++i;
+        --j;
     }
+    swap(a[l], a[j]);
+
+    int th = r - k;//设定好 降序时 第k小的数 对应 的是 正序时的 第th大的数
+
+    if (j == th) return a[j];
+    if (j < th) return quicksort_k_small1_1(a, j + 1, r, k);
+    else return quicksort_k_small1_1(a, l, j - 1, k);
 }
 
-int main() {
-    scanf("%d%d%d", &n, &m, &l);
-    for (int i = 1; i <= n; i++)
-        G[ i ].clear();
-    for (int i = 1; i <= m; i++) {
-        int x, y, z;
-        scanf("%d%d%d", &x, &y, &z);
-        G[ x ].push_back((edge){x, y, z});
-    }
-    for (int i = 1; i <= n; i++)
-        sort(G[ i ].begin(), G[ i ].end());
-    Max = 0;
-    for (int i = 1; i <= l; i++)
-        scanf("%d", &qu[ i ]), Max = max(Max, qu[ i ]);
-    Dijkstra();
-    for (int i = 1; i <= l; i++)
-        printf("%lld\n", ans[ qu[ i ] ]);
-    return 0;
+int main()
+{
+        int n , m ,p, t1 , t2 , t3,count=0;
+        cin>>n>>m>>p; 
+        for(int i = 1 ; i <= n ; i ++) 
+        {
+                for(int j = 1 ; j <= n ; j ++)
+                {
+                        if(i == j)
+                                e[i][j] = 0 ;
+                        else
+                                e[i][j] = INF;
+                }
+        }
+        for(int i = 1 ; i <= m ; i ++)
+        {
+                cin>>t1>>t2>>t3;
+                e[t1][t2] = t3;
+                e[t2][t1] = t3;
+        }
+        for(int k = 1 ; k <= n ; k ++)
+        {
+                for(int i = 1 ; i <= n ; i ++)
+                {
+                        for(int j = 1 ; j <= n ; j ++)
+                        {
+                                if(e[i][j] > e[i][k] + e[k][j])
+                                        e[i][j] = e[i][k] + e[k][j];
+                        }
+                }
+        }
+        for(int i = 1 ; i <= n ; i ++)
+        {
+                for(int j = 1 ; j < i ; j ++)
+                {
+                    if (e[i][j]!=0 &&e[i][j]!=INF){
+                        a[count]=e[i][j];
+                        count++;
+                    }
+                }
+        }
+
+        // for(int i = 1 ; i <= n ; i ++)
+        // {
+        //         for(int j = 1 ; j <= n ; j ++)
+        //         {
+        //                 printf("%3d",e[i][j]);
+        //         }
+        //         cout<<endl;
+        // }
+        // for (int i = 0 ; i <count ; i ++)
+        //     cout<<a[i]<<endl;
+        cout<<quicksort_k_small1_1(a,0,count-1,p+1)<<endl;
+        return 0 ;
 }
