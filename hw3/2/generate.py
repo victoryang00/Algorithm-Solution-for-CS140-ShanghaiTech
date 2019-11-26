@@ -1,8 +1,8 @@
 import random
-n=40
-m=n*n/2
-k=400
-print("{} {} {}".format(n,m,k))
-for i in range(1,n+1):
-    for j in range(i+1,n+1):
-        print("{} {} {}".format(i,j,random.randint(0,10000)))
+n=401
+m=800
+k=5
+print("{} {} {}\n".format(n,m,k))
+for i in range(1,n-1):
+    print("{} {} {}\n".format(i,i+1,random.randint(0,10000)))
+    print("{} {} {}\n".format(i,i+2,random.randint(0,10000)))
